@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% set title = "Категория 1" %}
+{% set active = "category" %}
+
+{% block content %}
+<h2 class="page-title">Категория 1</h2>
+
+<div class="row mb-4">
+    {% for i in range(1, 4) %}
+    <div class="col-md-4">
+        <div class="product-card">
+            <div class="card-header">
+                <h4 class="my-0 fw-normal">Товар {{ i }}</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="price">$100</h1>
+                <ul class="list-unstyled">
+                    <li>10 users included</li>
+                    <li>2GB of storage</li>
+                    <li>Email support</li>
+                    <li>Help center access</li>
+                </ul>
+                <button type="button" class="w-100 btn btn-outline-primary">Купить</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row">
+    {% for i in range(4, 7) %}
+    <div class="col-md-4">
+        <div class="product-card">
+            <div class="card-header">
+                <h4 class="my-0 fw-normal">Товар {{ i }}</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="price">$100</h1>
+                <ul class="list-unstyled">
+                    <li>10 users included</li>
+                    <li>2GB of storage</li>
+                    <li>Email support</li>
+                    <li>Help center access</li>
+                </ul>
+                <button type="button" class="w-100 btn btn-outline-primary">Купить</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
