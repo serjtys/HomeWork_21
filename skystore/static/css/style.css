@@ -1,0 +1,179 @@
+@charset "UTF-8";
+
+.sidebar {
+    background-color: #343a40;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    padding: 20px;
+    color: white;
+}
+
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu-item {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.menu-item:hover {
+    background-color: #495057;
+}
+
+.menu-item.active {
+    background-color: #007bff;
+}
+
+.menu-icon {
+    margin-right: 10px;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.product-card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: white;
+}
+
+.card-header {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.price {
+    color: #28a745;
+    font-size: 24px;
+}
+
+.user-dropdown {
+    position: relative;
+    margin-top: auto;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.user-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid #ddd;
+    width: 100%;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: #333 !important;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background: #f8f9fa;
+}
+
+.user-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.page-title, .contact-form, .catalog-card {
+    text-align: center;
+}
+
+
+.product-card {
+    text-align: center;
+    margin: 0 auto 30px;
+    max-width: 300px;
+}
+
+
+.user-section {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+}
+
+.user-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.contact-form {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background: #f8f9fa;
+    margin-top: 30px;
+}
+
+.contact-form button {
+    margin-top: 15px;
+}
+
+
+.catalog-card {
+    margin-bottom: 30px;
+}
+
+.card-img-top {
+    background: #6c757d;
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.btn-group-card {
+    display: flex;
+    gap: 5px;
+}
+
+.card-time {
+    float: right;
+    color: #6c757d;
+}
+
+
+.contact-info {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    height: 100%;
+}
+
+
+.card-img-top {
+    background: #495057;
+    color: white;
+    padding: 50px 10px; /* Увеличили высоту */
+    text-align: center;
+    font-size: 1.2rem;
+}
