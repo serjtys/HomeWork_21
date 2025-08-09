@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% set title = "Главная" %}
+{% set active = "index" %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="page-title">Главная</h1>
+    <p>Вы находитесь на сайте для продажи товаров</p>
+
+    <div class="row">
+        {% for i in range(1, 4) %}
+        <div class="col-md-4">
+            <div class="product-card">
+                <div class="card-header">
+                    <h4>Товар {{ i }}</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="price">$100</h1>
+                    <ul class="list-unstyled">
+                        <li>10 users included</li>
+                        <li>2GB of storage</li>
+                        <li>Email support</li>
+                        <li>Help center access</li>
+                    </ul>
+                    <button class="btn btn-primary">Купить</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
