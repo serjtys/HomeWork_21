@@ -1,5 +1,4 @@
 {% load static %}
-<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -14,18 +13,20 @@
     <div class="sidebar">
         <div class="menu-items">
             <h4 class="mb-4">Меню</h4>
-            <a href="/" class="menu-item {% if request.path == '/' %}active{% endif %}">
+            <a href="{% url 'home' %}" class="menu-item {% if request.path == '/' %}active{% endif %}">
                 <i class="bi bi-house-fill"></i> Главная
             </a>
             <a href="/catalog/" class="menu-item {% if request.path == '/catalog/' %}active{% endif %}">
                 <i class="bi bi-speedometer2"></i> Каталог
             </a>
-            <a href="/contacts/" class="menu-item {% if request.path == '/contacts/' %}active{% endif %}">
+            <a href="{% url 'add_product' %}" class="menu-item {% if request.path == '/add-product/' %}active{% endif %}">
+                <i class="bi bi-plus-circle"></i> Добавить товар
+            </a>
+            <a href="{% url 'contacts' %}" class="menu-item {% if request.path == '/contacts/' %}active{% endif %}">
                 <i class="bi bi-person-fill"></i> Контакты
             </a>
         </div>
     </div>
-
 
     <div class="main-content">
         {% block content %}{% endblock %}
