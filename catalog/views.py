@@ -1,40 +1,37 @@
-from django.shortcuts import render
-from .models import Product
+from django.views.generic import ListView, DetailView, TemplateView, CreateView
 from django.shortcuts import get_object_or_404
-from django.shortcuts import redirect
+from .models import Product
+from django.urls import reverse_lazy
 from .forms import ProductForm
-from django.core.paginator import Paginator
 
+class HomeView(ListView):
+    model = Product
+    template_name = 'catalog/home.html'
+    context_object_name = 'page_obj'
+    paginate_by = 6
+    ordering = ['-created_at']
 
-def home(request):
-    products_list = Product.objects.all().order_by('-created_at')
-    paginator = Paginator(products_list, 6)  # 6 товаров на страницу
+    def get_queryset(self):
+        return Product.objects.all().order_by('-created_at')
 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'catalog/product_detail.html'
+    context_object_name = 'product'
 
-    return render(request, 'catalog/home.html', {'page_obj': page_obj})
+class ContactsView(TemplateView):
+    template_name = 'catalog/contacts.html'
 
-def contacts(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
-        print(f"Получены данные: {name}, {phone}, {message}")  # Для теста
-    return render(request, 'catalog/contacts.html')
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            phone = request.POST.get('phone')
+            message = request.POST.get('message')
+            print(f"Получены данные: {name}, {phone}, {message}")
+        return self.render_to_response({})
 
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    return render(request, 'catalog/product_detail.html', {'product': product})
-
-
-def add_product(request):
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    else:
-        form = ProductForm()
-
-    return render(request, 'catalog/add_product.html', {'form': form})
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/add_product.html'
+    success_url = reverse_lazy('home')

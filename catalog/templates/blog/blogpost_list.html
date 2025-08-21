@@ -1,0 +1,43 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Блог</h1>
+    
+    <div class="text-end mb-4">
+        <a href="{% url 'blog:create' %}" class="btn btn-primary">
+            <i class="bi bi-plus"></i> Новая запись
+        </a>
+    </div>
+
+    <div class="row">
+        {% for post in object_list %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow">
+                {% if post.preview_image %}
+                <img src="{{ post.preview_image.url }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.content|truncatewords:30 }}</p>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <small class="text-muted">{{ post.created_at|date:"d.m.Y" }}</small>
+                        <small class="text-muted">Просмотров: {{ post.views_count }}</small>
+                    </div>
+                    <div class="mt-2">
+                        <a href="{% url 'blog:detail' post.pk %}" class="btn btn-sm btn-outline-primary">Читать</a>
+                        <a href="{% url 'blog:update' post.pk %}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                        <a href="{% url 'blog:delete' post.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">Записи скоро появятся</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
