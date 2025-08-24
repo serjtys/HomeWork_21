@@ -23,6 +23,8 @@
             <div class="d-flex gap-2">
                 <button class="btn btn-primary btn-lg">Купить</button>
                 <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg">Назад</a>
+                <a href="{% url 'edit_product' product.pk %}" class="btn btn-outline-warning btn-lg">Редактировать</a>
+                <a href="{% url 'delete_product' product.pk %}" class="btn btn-outline-danger btn-lg">Удалить</a>
             </div>
             
             <div class="mt-4">
