@@ -1,7 +1,29 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from .models import Product, Category
 
+
 class ProductForm(forms.ModelForm):
+    # Список запрещенных слов
+    FORBIDDEN_WORDS = [
+        'казино', 'криптовалюта', 'крипта',
+        'биржа', 'дешево', 'бесплатно',
+        'обман', 'полиция', 'радар'
+    ]
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        if image:
+            # Проверка формата
+            if not image.name.lower().endswith(('.jpg', '.jpeg', '.png')):
+                raise ValidationError('Поддерживаются только форматы JPEG и PNG')
+
+            # Проверка размера (5MB)
+            if image.size > 5 * 1024 * 1024:
+                raise ValidationError('Размер файла не должен превышать 5MB')
+
+        return image
+
     class Meta:
         model = Product
         fields = ['name', 'description', 'image', 'category', 'price']
@@ -34,3 +56,30 @@ class ProductForm(forms.ModelForm):
             'price': 'Цена',
             'image': 'Изображение'
         }
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name', '').lower()
+        for word in self.FORBIDDEN_WORDS:
+            if word in name:
+                raise ValidationError(f'Название содержит запрещенное слово: "{word}"')
+        return self.cleaned_data['name']
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description', '').lower()
+        for word in self.FORBIDDEN_WORDS:
+            if word in description:
+                raise ValidationError(f'Описание содержит запрещенное слово: "{word}"')
+        return self.cleaned_data['description']
+
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        if price is not None and price < 0:
+            raise ValidationError('Цена не может быть отрицательной')
+        return price
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Стилизация всех полей
+        for field_name, field in self.fields.items():
+            if field_name != 'image':  # Для FileInput не добавляем form-control
+                field.widget.attrs['class'] = field.widget.attrs.get('class', '') + ' form-control'

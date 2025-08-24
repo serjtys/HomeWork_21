@@ -11,7 +11,7 @@
         <a href="{% url 'blog:list' %}" class="menu-item {% if request.path == '/blogs/' %}active{% endif %}">
             <i class="bi bi-journal-text"></i> Блог
         </a>
-        <a href="{% url 'add_product' %}" class="menu-item {% if request.path == '/add-product/' %}active{% endif %}">
+        <a href="{% url 'add_product' %}" class="menu-item {% if request.path == '/product/add/' %}active{% endif %}">
             <i class="bi bi-plus-circle"></i> Добавить товар
         </a>
         <a href="{% url 'contacts' %}" class="menu-item {% if request.path == '/contacts/' %}active{% endif %}">
