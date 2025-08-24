@@ -1,11 +1,21 @@
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal">Skystore</h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="{% url 'home' %}">Главная</a>
-        <a class="p-2 text-dark" href="/catalog/">Каталог</a>
-        <a class="p-2 text-dark" href="{% url 'contacts' %}">Контакты</a>
-    </nav>
-    <a href="{% url 'add_product' %}" class="menu-item">
-        <i class="bi bi-plus-circle"></i> Добавить товар
-    </a>
+<!-- Боковое меню -->
+<div class="sidebar">
+    <div class="menu-items">
+        <h4 class="mb-4">Меню</h4>
+        <a href="{% url 'home' %}" class="menu-item {% if request.path == '/' %}active{% endif %}">
+            <i class="bi bi-house-fill"></i> Главная
+        </a>
+        <a href="/catalog/" class="menu-item {% if request.path == '/catalog/' %}active{% endif %}">
+            <i class="bi bi-speedometer2"></i> Каталог
+        </a>
+        <a href="{% url 'blog:list' %}" class="menu-item {% if request.path == '/blogs/' %}active{% endif %}">
+            <i class="bi bi-journal-text"></i> Блог
+        </a>
+        <a href="{% url 'add_product' %}" class="menu-item {% if request.path == '/add-product/' %}active{% endif %}">
+            <i class="bi bi-plus-circle"></i> Добавить товар
+        </a>
+        <a href="{% url 'contacts' %}" class="menu-item {% if request.path == '/contacts/' %}active{% endif %}">
+            <i class="bi bi-person-fill"></i> Контакты
+        </a>
+    </div>
 </div>
