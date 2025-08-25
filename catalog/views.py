@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from .models import Product
 from .forms import ProductForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class HomeView(ListView):
     model = Product
@@ -31,13 +32,15 @@ class ContactsView(TemplateView):
         return self.render_to_response({})
 
 # CRUD операции
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    login_url = '/users/login/'
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('home')
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = '/users/login/'
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
@@ -45,7 +48,8 @@ class ProductUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('product_detail', kwargs={'pk': self.object.pk})
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    login_url = '/users/login/'
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('home')
