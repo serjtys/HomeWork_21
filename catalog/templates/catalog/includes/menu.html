@@ -2,6 +2,8 @@
 <div class="sidebar">
     <div class="menu-items">
         <h4 class="mb-4">Меню</h4>
+
+        <!-- Основные пункты меню -->
         <a href="{% url 'home' %}" class="menu-item {% if request.path == '/' %}active{% endif %}">
             <i class="bi bi-house-fill"></i> Главная
         </a>
@@ -11,11 +13,33 @@
         <a href="{% url 'blog:list' %}" class="menu-item {% if request.path == '/blogs/' %}active{% endif %}">
             <i class="bi bi-journal-text"></i> Блог
         </a>
-        <a href="{% url 'add_product' %}" class="menu-item {% if request.path == '/product/add/' %}active{% endif %}">
+        <a href="{% url 'add_product' %}" class="menu-item {% if request.path == '/add-product/' %}active{% endif %}">
             <i class="bi bi-plus-circle"></i> Добавить товар
         </a>
         <a href="{% url 'contacts' %}" class="menu-item {% if request.path == '/contacts/' %}active{% endif %}">
             <i class="bi bi-person-fill"></i> Контакты
         </a>
+
+        <!-- Блок авторизации -->
+        <div class="mt-4 pt-3 border-top">
+            {% if user.is_authenticated %}
+                <span class="menu-item text-white">
+                    <i class="bi bi-person-circle"></i> {{ user.email }}
+                </span>
+                <a href="{% url 'users:profile_edit' %}" class="menu-item">
+                    <i class="bi bi-gear"></i> Профиль
+                </a>
+                <a href="{% url 'users:logout' %}" class="menu-item">
+                    <i class="bi bi-box-arrow-right"></i> Выйти
+                </a>
+            {% else %}
+                <a href="{% url 'users:login' %}" class="menu-item">
+                    <i class="bi bi-box-arrow-in-right"></i> Войти
+                </a>
+                <a href="{% url 'users:register' %}" class="menu-item">
+                    <i class="bi bi-person-plus"></i> Регистрация
+                </a>
+            {% endif %}
+        </div>
     </div>
 </div>

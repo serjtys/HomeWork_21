@@ -474,3 +474,8 @@
 .blog-detail .content p {
     margin-bottom: 1.5rem;
 }
+
+.user-email {
+    color: #ffffff !important;  /* Белый цвет */
+    font-weight: bold;
+}

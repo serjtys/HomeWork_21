@@ -1,0 +1,28 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="card-title mb-0 text-center">Удаление товара</h3>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Вы уверены, что хотите удалить товар "{{ object }}"?</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'product_detail' object.pk %}" class="btn btn-outline-secondary me-md-2">
+                                Отмена
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Удалить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
