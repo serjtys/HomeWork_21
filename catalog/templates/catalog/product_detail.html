@@ -16,17 +16,23 @@
             <h1 class="display-5">{{ product.name }}</h1>
             <p class="text-muted">{{ product.category.name }}</p>
             <h3 class="text-primary mb-4">{{ product.price }} ₽</h3>
-            
+
             <h4>Описание</h4>
             <p class="lead">{{ product.description }}</p>
-            
+
             <div class="d-flex gap-2">
                 <button class="btn btn-primary btn-lg">Купить</button>
                 <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg">Назад</a>
+
+                {% if user == product.owner or perms.catalog.change_product or perms.catalog.can_change_publish_status %}
                 <a href="{% url 'edit_product' product.pk %}" class="btn btn-outline-warning btn-lg">Редактировать</a>
+                {% endif %}
+
+                {% if user == product.owner or perms.catalog.delete_product or perms.catalog.can_change_publish_status %}
                 <a href="{% url 'delete_product' product.pk %}" class="btn btn-outline-danger btn-lg">Удалить</a>
+                {% endif %}
             </div>
-            
+
             <div class="mt-4">
                 <small class="text-muted">
                     Создан: {{ product.created_at|date:"d.m.Y" }}<br>

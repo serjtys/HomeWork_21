@@ -26,7 +26,7 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'description', 'image', 'category', 'price']
+        fields = ['name', 'description', 'image', 'category', 'price', 'publish_status']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -47,6 +47,9 @@ class ProductForm(forms.ModelForm):
             }),
             'image': forms.FileInput(attrs={
                 'class': 'form-control'
+            }),
+            'publish_status': forms.Select(attrs={
+                'class': 'form-select'
             })
         }
         labels = {
@@ -54,7 +57,8 @@ class ProductForm(forms.ModelForm):
             'description': 'Описание',
             'category': 'Категория',
             'price': 'Цена',
-            'image': 'Изображение'
+            'image': 'Изображение',
+            'publish_status': 'Статус публикации'
         }
 
     def clean_name(self):
@@ -78,8 +82,20 @@ class ProductForm(forms.ModelForm):
         return price
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+
         # Стилизация всех полей
         for field_name, field in self.fields.items():
             if field_name != 'image':  # Для FileInput не добавляем form-control
                 field.widget.attrs['class'] = field.widget.attrs.get('class', '') + ' form-control'
+
+        # Скрываем поле статуса публикации для обычных пользователей
+        if not self.user or not self.user.has_perm('catalog.can_change_publish_status'):
+            if 'publish_status' in self.fields:
+                self.fields['publish_status'].widget.attrs['class'] = 'form-control'
+                self.fields['publish_status'].widget.attrs['disabled'] = True
+        else:
+            # Если поле видимо - убедимся что у него правильный класс
+            if 'publish_status' in self.fields:
+                self.fields['publish_status'].widget.attrs['class'] = 'form-select'

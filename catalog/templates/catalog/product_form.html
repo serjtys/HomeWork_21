@@ -64,6 +64,16 @@
                             {% endif %}
                         </div>
 
+                        {% if perms.catalog.can_change_publish_status %}
+                        <div class="mb-4">
+                            <label for="{{ form.publish_status.id_for_label }}" class="form-label fw-bold">Статус публикации</label>
+                            {{ form.publish_status }}
+                            {% if form.publish_status.errors %}
+                            <div class="text-danger small mt-1">{{ form.publish_status.errors }}</div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
                         <!-- Кнопки -->
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a href="{% url 'home' %}" class="btn btn-outline-secondary me-md-2">
