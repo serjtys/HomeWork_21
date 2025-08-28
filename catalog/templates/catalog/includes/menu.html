@@ -7,9 +7,23 @@
         <a href="{% url 'home' %}" class="menu-item {% if request.path == '/' %}active{% endif %}">
             <i class="bi bi-house-fill"></i> Главная
         </a>
-        <a href="/catalog/" class="menu-item {% if request.path == '/catalog/' %}active{% endif %}">
-            <i class="bi bi-speedometer2"></i> Каталог
-        </a>
+        <div class="dropdown">
+            <a href="/catalog/" class="menu-item dropdown-toggle {% if request.path == '/catalog/' %}active{% endif %}"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-speedometer2"></i> Каталог
+            </a>
+            <ul class="dropdown-menu">
+                {% for category in categories %}
+                <li>
+                    <a class="dropdown-item" href="{% url 'category_products' category.id %}">
+                        {{ category.name }}
+                    </a>
+                </li>
+                {% empty %}
+                <li><span class="dropdown-item-text">Нет категорий</span></li>
+                {% endfor %}
+            </ul>
+        </div>
         <a href="{% url 'blog:list' %}" class="menu-item {% if request.path == '/blogs/' %}active{% endif %}">
             <i class="bi bi-journal-text"></i> Блог
         </a>

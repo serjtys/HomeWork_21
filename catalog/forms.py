@@ -11,6 +11,26 @@ class ProductForm(forms.ModelForm):
         'обман', 'полиция', 'радар'
     ]
 
+    def clean_name(self):
+        name = self.cleaned_data.get('name', '').lower()
+        for word in self.FORBIDDEN_WORDS:
+            if word in name:
+                raise ValidationError(f'Название содержит запрещенное слово: "{word}"')
+        return self.cleaned_data['name']
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description', '').lower()
+        for word in self.FORBIDDEN_WORDS:
+            if word in description:
+                raise ValidationError(f'Описание содержит запрещенное слово: "{word}"')
+        return self.cleaned_data['description']
+
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        if price is not None and price < 0:
+            raise ValidationError('Цена не может быть отрицательной')
+        return price
+
     def clean_image(self):
         image = self.cleaned_data.get('image')
         if image:
@@ -61,41 +81,23 @@ class ProductForm(forms.ModelForm):
             'publish_status': 'Статус публикации'
         }
 
-    def clean_name(self):
-        name = self.cleaned_data.get('name', '').lower()
-        for word in self.FORBIDDEN_WORDS:
-            if word in name:
-                raise ValidationError(f'Название содержит запрещенное слово: "{word}"')
-        return self.cleaned_data['name']
-
-    def clean_description(self):
-        description = self.cleaned_data.get('description', '').lower()
-        for word in self.FORBIDDEN_WORDS:
-            if word in description:
-                raise ValidationError(f'Описание содержит запрещенное слово: "{word}"')
-        return self.cleaned_data['description']
-
-    def clean_price(self):
-        price = self.cleaned_data.get('price')
-        if price is not None and price < 0:
-            raise ValidationError('Цена не может быть отрицательной')
-        return price
-
     def __init__(self, *args, **kwargs):
+        # Извлекаем пользователя из kwargs
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-        # Стилизация всех полей
-        for field_name, field in self.fields.items():
-            if field_name != 'image':  # Для FileInput не добавляем form-control
-                field.widget.attrs['class'] = field.widget.attrs.get('class', '') + ' form-control'
-
-        # Скрываем поле статуса публикации для обычных пользователей
+        # Для обычных пользователей скрываем поле publish_status
         if not self.user or not self.user.has_perm('catalog.can_change_publish_status'):
             if 'publish_status' in self.fields:
-                self.fields['publish_status'].widget.attrs['class'] = 'form-control'
-                self.fields['publish_status'].widget.attrs['disabled'] = True
+                # Устанавливаем значение по умолчанию
+                self.fields['publish_status'].initial = 'moderation'
+                # Скрываем поле
+                self.fields['publish_status'].widget = forms.HiddenInput()
         else:
-            # Если поле видимо - убедимся что у него правильный класс
+            # Для админов убедимся, что поле видимое и имеет правильный виджет
             if 'publish_status' in self.fields:
-                self.fields['publish_status'].widget.attrs['class'] = 'form-select'
+                self.fields['publish_status'].widget = forms.Select(attrs={
+                    'class': 'form-select'
+                })
+                # Убедимся, что choices установлены правильно
+                self.fields['publish_status'].choices = Product.PUBLISH_STATUS_CHOICES
