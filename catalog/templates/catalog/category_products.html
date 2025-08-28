@@ -1,0 +1,44 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Товары в категории: {{ category_name }}</h1>
+    
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for product in products %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top p-2" alt="{{ product.name }}" style="height: 200px; object-fit: contain;">
+                {% else %}
+                <div class="text-center py-4 bg-light">
+                    <i class="bi bi-image" style="font-size: 3rem; color: #6c757d;"></i>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-muted small">{{ product.category.name }}</p>
+                    <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                </div>
+                <div class="card-footer bg-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fs-5">{{ product.price }} ₽</span>
+                        <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm btn-outline-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">В этой категории пока нет товаров</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block floating_buttons %}
+<!-- ФИКСИРОВАННАЯ КНОПКА ДОБАВЛЕНИЯ ТОВАРА -->
+<a href="{% url 'add_product' %}" class="fixed-add-btn btn btn-primary btn-lg">
+    <i class="bi bi-plus-circle"></i> Добавить товар
+</a>
+{% endblock %}

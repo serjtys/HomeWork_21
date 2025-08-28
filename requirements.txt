@@ -4,3 +4,5 @@ Pillow==10.0.1
 ipython==8.17.2
 django-environ==0.11.2
 python-dotenv==1.1.1
+redis==4.5.5
+django-redis==5.2.0
